@@ -4,6 +4,7 @@ import java.net.URI;
 import java.util.List;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -50,5 +51,11 @@ public class CategoryResource {
 		dto = this.categoryService.update(id, dto);
 		return ResponseEntity.ok().body(dto);
 	}
-
+	
+	@DeleteMapping(path = "/{id}")
+	public ResponseEntity<Void> deleteById(@PathVariable Long id) {
+		this.categoryService.delete(id);
+		return ResponseEntity.noContent().build();
+	}
+	
 }
