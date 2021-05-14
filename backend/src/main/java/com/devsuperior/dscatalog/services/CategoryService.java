@@ -27,5 +27,11 @@ public class CategoryService {
 		List<Category> categories = this.categoryRepository.findAll();
 		return Collections.unmodifiableList(categories.stream().map(x -> new CategoryDto(x)).collect(Collectors.toList()));
 	}
+
+	@Transactional(readOnly = true)
+	public CategoryDto findById(Long id) {
+		Category category = this.categoryRepository.findById(id).orElseThrow(() -> new RuntimeException("Category not found"));
+		return new CategoryDto(category);
+	}
 	
 }
