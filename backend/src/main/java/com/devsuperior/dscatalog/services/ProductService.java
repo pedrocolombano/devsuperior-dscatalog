@@ -10,7 +10,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.devsuperior.dscatalog.dto.ProductDTO;
+import com.devsuperior.dscatalog.entities.Category;
 import com.devsuperior.dscatalog.entities.Product;
+import com.devsuperior.dscatalog.repositories.CategoryRepository;
 import com.devsuperior.dscatalog.repositories.ProductRepository;
 import com.devsuperior.dscatalog.services.exceptions.DatabaseException;
 import com.devsuperior.dscatalog.services.exceptions.ResourceNotFoundException;
@@ -19,9 +21,12 @@ import com.devsuperior.dscatalog.services.exceptions.ResourceNotFoundException;
 public class ProductService {
 
 	private ProductRepository productRepository;
+	
+	private CategoryRepository categoryRepository;
 
-	public ProductService(final ProductRepository productRepository) {
+	public ProductService(final ProductRepository productRepository, final CategoryRepository categoryRepository) {
 		this.productRepository = productRepository;
+		this.categoryRepository = categoryRepository;
 	}
 
 	@Transactional(readOnly = true)
@@ -39,16 +44,17 @@ public class ProductService {
 
 	@Transactional
 	public ProductDTO insert(ProductDTO dto) {
-		// Product product = new Product(null, dto.getName());
-		// product = this.productRepository.save(product);
-		return new ProductDTO();
+		Product product = new Product();
+		this.copyDataFromDto(dto, product);
+		product = this.productRepository.save(product);
+		return new ProductDTO(product);
 	}
 
 	@Transactional
 	public ProductDTO update(Long id, ProductDTO dto) {
 		try {
 			Product entity = this.productRepository.getOne(id);
-			entity.setName(dto.getName());
+			this.copyDataFromDto(dto, entity);
 			entity = this.productRepository.save(entity);
 			return new ProductDTO(entity);
 		} catch (EntityNotFoundException e) {
@@ -66,4 +72,18 @@ public class ProductService {
 		}
 	}
 
+	private void copyDataFromDto(ProductDTO dto, Product product) {
+		product.setName(dto.getName());
+		product.setDescription(dto.getDescription());
+		product.setPrice(dto.getPrice());
+		product.setDate(dto.getDate());
+		product.setImgUrl(dto.getImgUrl());
+		
+		product.getCategories().clear();
+		dto.getCategories().forEach(categoryDto -> {
+			Category category = this.categoryRepository.getOne(categoryDto.getId());
+			product.addCategory(category);
+		});
+	}
+	
 }

@@ -101,6 +101,10 @@ public class Product implements Serializable {
 	public Set<Category> getCategories() {
 		return categories;
 	}
+	
+	public void addCategory(Category category) {
+		this.categories.add(category);
+	}
 
 	@Override
 	public int hashCode() {
