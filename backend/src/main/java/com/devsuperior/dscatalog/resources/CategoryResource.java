@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import com.devsuperior.dscatalog.dto.CategoryDto;
+import com.devsuperior.dscatalog.dto.CategoryDTO;
 import com.devsuperior.dscatalog.services.CategoryService;
 
 @RestController
@@ -31,32 +31,32 @@ public class CategoryResource {
 	}
 
 	@GetMapping
-	public ResponseEntity<Page<CategoryDto>> findAll(@RequestParam(value = "page", defaultValue = "0") Integer page,
+	public ResponseEntity<Page<CategoryDTO>> findAll(@RequestParam(value = "page", defaultValue = "0") Integer page,
 			@RequestParam(value = "linesPerPage", defaultValue = "12") Integer linesPerPage,
 			@RequestParam(value = "orderBy", defaultValue = "name") String orderBy,
 			@RequestParam(value = "direction", defaultValue = "DESC") String direction) {
 
 		PageRequest pageRequest = PageRequest.of(page, linesPerPage, Direction.valueOf(direction.toUpperCase()), orderBy);
-		Page<CategoryDto> categories = this.categoryService.findAllPaged(pageRequest);
+		Page<CategoryDTO> categories = this.categoryService.findAllPaged(pageRequest);
 
 		return ResponseEntity.ok().body(categories);
 	}
 
 	@GetMapping(path = "/{id}")
-	public ResponseEntity<CategoryDto> findById(@PathVariable Long id) {
-		CategoryDto category = this.categoryService.findById(id);
+	public ResponseEntity<CategoryDTO> findById(@PathVariable Long id) {
+		CategoryDTO category = this.categoryService.findById(id);
 		return ResponseEntity.ok().body(category);
 	}
 
 	@PostMapping
-	public ResponseEntity<CategoryDto> insert(@RequestBody CategoryDto dto) {
+	public ResponseEntity<CategoryDTO> insert(@RequestBody CategoryDTO dto) {
 		dto = this.categoryService.insert(dto);
 		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(dto.getId()).toUri();
 		return ResponseEntity.created(uri).body(dto);
 	}
 
 	@PutMapping(path = "/{id}")
-	public ResponseEntity<CategoryDto> update(@RequestBody CategoryDto dto, @PathVariable Long id) {
+	public ResponseEntity<CategoryDTO> update(@RequestBody CategoryDTO dto, @PathVariable Long id) {
 		dto = this.categoryService.update(id, dto);
 		return ResponseEntity.ok().body(dto);
 	}
