@@ -27,6 +27,7 @@ public class ProductDTO implements Serializable {
 	}
 
 	public ProductDTO(Long id, String name, String description, BigDecimal price, String imgUrl, Instant date) {
+		this.id = id;
 		this.name = name;
 		this.description = description;
 		this.price = price;
@@ -35,6 +36,7 @@ public class ProductDTO implements Serializable {
 	}
 
 	public ProductDTO(Product entity) {
+		this.id = entity.getId();
 		this.name = entity.getName();
 		this.description = entity.getDescription();
 		this.price = entity.getPrice();
