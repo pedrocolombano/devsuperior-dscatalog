@@ -13,6 +13,7 @@ public class Factory {
 				"Grave vídeos 4K, faça belos retratos e capture paisagens inteiras com o novo sistema de câmera dupla. Tire fotos incríveis com pouca luz usando o modo Noite. Veja cores fiéis em fotos, vídeos e jogos na tela Liquid Retina de 6,1 polegadas. Leve o desempenho sem precedentes do chip A13 Bionic para seus games, realidade aumentada e fotografia. Faça muito e recarregue pouco com a bateria para o dia todo.",
 				new BigDecimal("4200.00"),
 				"https://a-static.mlcdn.com.br/1500x1500/iphone-11-apple-64gb-preto-61-12mp-ios/magazineluiza/155610500/2815c001fcdff11766fcb266dca62daf.jpg");
+		product.setId(1L);
 		product.addCategory(new Category(2L, "Electronics"));
 		return product;
 	}
