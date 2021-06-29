@@ -78,6 +78,7 @@ public class ProductService {
 		product.setPrice(dto.getPrice());
 		product.setDate(dto.getDate());
 		product.setImgUrl(dto.getImgUrl());
+		product.setDate(dto.getDate());
 		
 		product.getCategories().clear();
 		dto.getCategories().forEach(categoryDto -> {
