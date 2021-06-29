@@ -3,8 +3,7 @@ package com.devsuperior.dscatalog.dto;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.time.Instant;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
 import java.util.Set;
 
 import com.devsuperior.dscatalog.entities.Category;
@@ -20,7 +19,7 @@ public class ProductDTO implements Serializable {
 	private BigDecimal price;
 	private String imgUrl;
 	private Instant date;
-	private List<CategoryDTO> categories = new ArrayList<>();
+	private Set<CategoryDTO> categories = new HashSet<>();
 	
 	public ProductDTO() {
 		
@@ -97,7 +96,7 @@ public class ProductDTO implements Serializable {
 		this.date = date;
 	}
 
-	public List<CategoryDTO> getCategories() {
+	public Set<CategoryDTO> getCategories() {
 		return categories;
 	}	
 	

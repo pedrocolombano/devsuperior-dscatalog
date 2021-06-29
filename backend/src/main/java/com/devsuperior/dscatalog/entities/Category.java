@@ -2,8 +2,8 @@ package com.devsuperior.dscatalog.entities;
 
 import java.io.Serializable;
 import java.time.Instant;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -34,7 +34,7 @@ public class Category implements Serializable {
 	private Instant updatedAt;
 	
 	@ManyToMany(mappedBy = "categories")
-	List<Product> products = new ArrayList<>();
+	private Set<Product> products = new HashSet<>();
 	
 	public Category() {
 		
@@ -67,6 +67,10 @@ public class Category implements Serializable {
 
 	public Instant getUpdatedAt() {
 		return updatedAt;
+	}
+	
+	public Set<Product> getProducts() {
+		return products;
 	}
 
 	@PrePersist
