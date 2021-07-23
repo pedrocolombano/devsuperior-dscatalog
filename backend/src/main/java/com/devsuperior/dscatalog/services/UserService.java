@@ -13,6 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.devsuperior.dscatalog.dto.UserDTO;
 import com.devsuperior.dscatalog.dto.UserInsertDTO;
+import com.devsuperior.dscatalog.dto.UserUpdateDTO;
 import com.devsuperior.dscatalog.entities.Role;
 import com.devsuperior.dscatalog.entities.User;
 import com.devsuperior.dscatalog.repositories.RoleRepository;
@@ -59,11 +60,10 @@ public class UserService {
 	}
 
 	@Transactional
-	public UserDTO update(Long id, UserInsertDTO dto) {
+	public UserDTO update(Long id, UserUpdateDTO dto) {
 		try {
 			User entity = this.userRepository.getOne(id);
 			this.setUserData(dto, entity);
-			entity.setPassword(this.passwordEncoder.encode(dto.getPassword()));
 			entity = this.userRepository.save(entity);
 			return new UserDTO(entity);
 		} catch (EntityNotFoundException e) {
