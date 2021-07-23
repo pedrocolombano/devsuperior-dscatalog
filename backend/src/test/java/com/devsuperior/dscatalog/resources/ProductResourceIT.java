@@ -21,14 +21,10 @@ public class ProductResourceIT {
 	@Autowired
 	private MockMvc mockMvc;
 
-	private Long existingId;
-	private Long nonExistingId;
 	private Long totalProducts;
 
 	@BeforeEach
 	public void setup() {
-		this.existingId = 1l;
-		this.nonExistingId = 1000l;
 		this.totalProducts = 25l;
 	}
 
