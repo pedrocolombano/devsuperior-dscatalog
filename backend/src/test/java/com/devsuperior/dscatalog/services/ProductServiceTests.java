@@ -16,9 +16,7 @@ import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
@@ -41,39 +39,29 @@ public class ProductServiceTests {
 	private long existingId;
 	private long nonExistingId;
 	private long dependentId;
-	private String existingName;
 	private PageImpl<Product> page;
 	private Product product;
-	
+
 	@BeforeEach
 	public void setup() {
 		MockitoAnnotations.openMocks(this);
 		this.existingId = 1l;
 		this.nonExistingId = 1000l;
 		this.dependentId = 4l;
-		this.existingName = "PC Gamer";
 		product = Factory.createProduct();
 		this.page = new PageImpl<>(List.of(product));
-		
-		Mockito.when(this.repository.findAll((Pageable) ArgumentMatchers.any())).thenReturn(this.page);
+
+		Mockito.when(this.repository.find(ArgumentMatchers.anyList(), ArgumentMatchers.anyString(),
+				ArgumentMatchers.any(Pageable.class))).thenReturn(page);
 		Mockito.when(this.repository.save(ArgumentMatchers.any())).thenReturn(this.product);
 		Mockito.when(this.repository.findById(this.existingId)).thenReturn(Optional.of(this.product));
 		Mockito.when(this.repository.findById(this.nonExistingId)).thenReturn(Optional.empty());
 		Mockito.when(this.repository.getOne(this.existingId)).thenReturn(this.product);
 		Mockito.when(this.repository.getOne(this.nonExistingId)).thenThrow(EntityNotFoundException.class);
-		
+
 		Mockito.doNothing().when(this.repository).deleteById(this.existingId);
 		Mockito.doThrow(EmptyResultDataAccessException.class).when(this.repository).deleteById(this.nonExistingId);
 		Mockito.doThrow(DataIntegrityViolationException.class).when(this.repository).deleteById(this.dependentId);
-	}
-
-	@Test
-	public void findAllPagedShouldReturnPageOfProductDTO() {
-		PageRequest pageable = PageRequest.of(0, 10);
-		Page<ProductDTO> page = this.service.findAllPaged(this.existingId, this.existingName, pageable);
-		
-		Assertions.assertNotNull(page);
-		Mockito.verify(this.repository, Mockito.times(1)).findAll(pageable);
 	}
 
 	@Test
@@ -82,13 +70,13 @@ public class ProductServiceTests {
 		dto = this.service.insert(dto);
 
 		Assertions.assertNotNull(dto);
-		Mockito.verify(this.repository, Mockito.times(1)).save(this.product);
+		Mockito.verify(this.repository, Mockito.times(1)).save(ArgumentMatchers.any(Product.class));
 	}
-	
+
 	@Test
 	public void findByIdShouldReturnProductDTOWhenIdExists() {
 		ProductDTO dto = this.service.findById(this.existingId);
-		
+
 		Assertions.assertNotNull(dto);
 		Mockito.verify(this.repository, Mockito.times(1)).findById(this.existingId);
 	}
