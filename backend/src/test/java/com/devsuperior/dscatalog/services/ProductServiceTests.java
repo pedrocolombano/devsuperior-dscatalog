@@ -41,6 +41,7 @@ public class ProductServiceTests {
 	private long existingId;
 	private long nonExistingId;
 	private long dependentId;
+	private String existingName;
 	private PageImpl<Product> page;
 	private Product product;
 	
@@ -50,6 +51,7 @@ public class ProductServiceTests {
 		this.existingId = 1l;
 		this.nonExistingId = 1000l;
 		this.dependentId = 4l;
+		this.existingName = "PC Gamer";
 		product = Factory.createProduct();
 		this.page = new PageImpl<>(List.of(product));
 		
@@ -68,7 +70,7 @@ public class ProductServiceTests {
 	@Test
 	public void findAllPagedShouldReturnPageOfProductDTO() {
 		PageRequest pageable = PageRequest.of(0, 10);
-		Page<ProductDTO> page = this.service.findAllPaged(pageable);
+		Page<ProductDTO> page = this.service.findAllPaged(this.existingId, this.existingName, pageable);
 		
 		Assertions.assertNotNull(page);
 		Mockito.verify(this.repository, Mockito.times(1)).findAll(pageable);

@@ -1,5 +1,7 @@
 package com.devsuperior.dscatalog.services;
 
+import java.util.List;
+
 import javax.persistence.EntityNotFoundException;
 
 import org.springframework.dao.DataIntegrityViolationException;
@@ -30,8 +32,9 @@ public class ProductService {
 	}
 
 	@Transactional(readOnly = true)
-	public Page<ProductDTO> findAllPaged(Pageable pageable) {
-		Page<Product> products = this.productRepository.findAll(pageable);
+	public Page<ProductDTO> findAllPaged(Long categoryId, String name, Pageable pageable) {
+		List<Category> categories =  (categoryId == 0) ? null : List.of(this.categoryRepository.getOne(categoryId));
+		Page<Product> products = this.productRepository.find(categories, name, pageable);
 		return products.map(x -> new ProductDTO(x));
 	}
 

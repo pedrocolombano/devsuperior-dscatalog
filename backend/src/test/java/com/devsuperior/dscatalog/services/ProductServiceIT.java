@@ -28,19 +28,21 @@ public class ProductServiceIT {
 	
 	private Long existingId;
 	private Long nonExistingId;
+	private String existingName;
 	private Long totalProductsAmount;
 	
 	@BeforeEach
 	public void setup() {
 		this.existingId = 1l;
 		this.nonExistingId = 1000l;
+		this.existingName = "PC Gamer";
 		this.totalProductsAmount = 25l;
 	}
 	
 	@Test
 	public void findAllPagedShouldReturnPageWhenPageZeroAndSizeTen() {
 		PageRequest page = PageRequest.of(0, 10);
-		Page<ProductDTO> result = this.service.findAllPaged(page);
+		Page<ProductDTO> result = this.service.findAllPaged(this.existingId, this.existingName, page);
 		Assertions.assertFalse(result.isEmpty());
 		Assertions.assertEquals(0, result.getNumber());
 		Assertions.assertEquals(10, result.getSize());
@@ -50,7 +52,7 @@ public class ProductServiceIT {
 	@Test
 	public void findAllPagedShouldReturnEmptyPageWhenPageFiftyAndSizeTen() {
 		PageRequest page = PageRequest.of(50, 10);
-		Page<ProductDTO> result = this.service.findAllPaged(page);
+		Page<ProductDTO> result = this.service.findAllPaged(this.existingId, this.existingName, page);
 		Assertions.assertTrue(result.isEmpty());
 		Assertions.assertEquals(50, result.getNumber());
 		Assertions.assertEquals(10, result.getSize());
@@ -60,7 +62,7 @@ public class ProductServiceIT {
 	@Test
 	public void findAllPagedShouldReturnSortPageWhenSortByPrice() {
 		PageRequest page = PageRequest.of(0, 10, Direction.DESC, "price");
-		Page<ProductDTO> result = this.service.findAllPaged(page);
+		Page<ProductDTO> result = this.service.findAllPaged(this.existingId, this.existingName, page);
 		Assertions.assertFalse(result.isEmpty());
 		Assertions.assertEquals(new BigDecimal("4170.00"), result.getContent().get(0).getPrice());
 	}
