@@ -1,10 +1,12 @@
 import './assets/styles/custom.scss';
 import './App.css';
+import { Navbar } from 'components/Navbar';
 
-function App() {
+export const App = () => {
   return (
-    <h1>Hello DS Catalog!</h1>
+    <>
+      <Navbar/>
+      <h1>Salv</h1>
+    </>
   );
 }
-
-export default App;
